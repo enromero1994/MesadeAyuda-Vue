@@ -1,32 +1,51 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="#c85c1c"
+      dark
+    > 
+      <router-link  to="/" class="clean-router">
+      <div  class="d-flex align-center clean-router">
+        <v-img
+          alt="Mesa de Ayuda UnLaR"
+          class="shrink mr-2"
+          contain
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Escudo_de_la_UNLaR.svg/1680px-Escudo_de_la_UNLaR.svg.png"
+          transition="scale-transition"
+          width="40"
+        />
+
+      
+        <span class="mr-2 title hidden-sm-and-down">Mesa de Ayuda UnLaR</span>
+      </div>
+      </router-link>
+      <v-spacer></v-spacer>
+
+      <v-btn
+        href="/signin"
+        
+        text
+      >
+        <span class="mr-2">Iniciar Sesion</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main class="backgroundHome">
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: 'App',
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  data: () => ({
+    //
+  }),
+};
+</script>
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
