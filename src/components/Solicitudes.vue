@@ -9,8 +9,8 @@
           :to="{
             name: 'Request',
             params: {
-              id: arregloCategorias[j].nombre,
-              objeto: arregloCategorias[j].id,
+              id: arregloCategorias[j].id,
+              objeto: arregloCategorias[j].name,
             },
           }"
         >
@@ -19,7 +19,7 @@
             :elevation="hover ? 12 : 2"
             :class="{ 'on-hover': hover }"
           >
-            <v-card-title>{{ n.nombre }}</v-card-title>
+            <v-card-title>{{ n.name }}</v-card-title>
             <v-card-subtitle class="text-left">
               <v-row>
                 <div

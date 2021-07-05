@@ -1,25 +1,25 @@
 <template>
-  <Landing></Landing>
+  <v-container>
+    <v-card height="250">
+      <v-container>
+        <h2>{{content}}</h2>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
-  import UserService from '../services/user.service';
-  import Landing from '../components/Landing'
+import UserService from '../../services/user.service';
 
-  export default {
-    name: 'Home',
-    
-    components: {
-    
-      Landing
-    },
-     data() {
+export default {
+  name: 'User',
+  data() {
     return {
       content: ''
     };
   },
-    mounted() {
-    UserService.getPublicContent().then(
+  mounted() {
+    UserService.getUserBoard().then(
       response => {
         this.content = response.data;
       },
@@ -31,5 +31,5 @@
       }
     );
   }
-  }
+};
 </script>

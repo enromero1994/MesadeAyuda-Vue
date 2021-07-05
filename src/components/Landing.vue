@@ -9,7 +9,7 @@
         <Buscador></Buscador>
       </v-col>
       <v-col cols="12">
-        <Solicitudes :arregloCategorias="getCategorias"></Solicitudes>
+        <Solicitudes :arregloCategorias="this.categorias"></Solicitudes>
       </v-col>
     </v-row>
   </v-container>
@@ -18,6 +18,8 @@
 <script>
 import Solicitudes from "../components/Solicitudes";
 import Buscador from "../components/Buscador";
+import CategoryService from "../services/categories.service";
+
 
 import { mapGetters } from 'vuex'
 export default {
@@ -25,13 +27,30 @@ export default {
     Solicitudes,
     Buscador,
   },
-  data: () => ({}),
+  data: () => ({
+    categorias : []
+  }),
    computed: {
       ...mapGetters([
       'getCategorias'
       // ...
     ])
-   }
+   },
+    mounted() {
+    CategoryService.getAllCategories().then(
+      (response) => {
+        console.log(response.data)
+        this.categorias = response.data;
+      },
+      (error) => {
+        console.log(error.message);
+        // this.content =
+        //   (error.response && error.response.data) ||
+        //   error.message ||
+        //   error.toString();
+      }
+    );
+  },
 };
 </script>
 

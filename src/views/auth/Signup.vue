@@ -2,28 +2,32 @@
   <v-container>
     <v-row>
       <v-col cols="12" class="col-lg-3"></v-col>
-      <v-col cols="12"  class="col-lg-6 col-sm-12 col-xs-12 col-md-12">
+      <v-col cols="12" class="col-lg-6 col-sm-12 col-xs-12 col-md-12">
         <div class="pt-10">
-        <v-form
-          ref="form"
-          v-model="valid"
-          :lazy-validation="lazy"
-          method="post"
-          @submit.prevent="register"
-        >
-          <v-row>
-            <v-col class="pb-0 mb-0" cols="12" lg="6" md="6" sm="12">
-              <v-text-field
-                solo
-                outlined
-                v-model="name"
-                :counter="10"
-                :rules="nameRules"
-                label="Nombre"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col class="pb-0 mb-0" cols="12" lg="6" md="6" sm="12">
+          <v-form
+            name="form"
+            v-model="valid"
+            lazy-validation
+            @submit.prevent="handleRegister"
+          >
+            <v-row>
+              <v-col class="pb-0 mb-0" cols="12" lg="12" md="12" sm="12">
+                <v-text-field
+                  solo
+                  outlined
+                  v-model="user.username"
+                  name="username"
+                  :counter="10"
+                  :rules="nameRules"
+                  label="Nombre de Usuario"
+                  required
+                ></v-text-field>
+                <!-- <div
+              v-if="submitted && errors.has('username')"
+              class="alert-danger"
+            >{{errors.first('username')}}</div> -->
+              </v-col>
+              <!-- <v-col class="pb-0 mb-0" cols="12" lg="6" md="6" sm="12">
               <v-text-field
                 solo
                 outlined
@@ -33,22 +37,27 @@
                 label="Apellido"
                 required
               ></v-text-field>
-            </v-col>
-          </v-row>
+            </v-col> -->
+            </v-row>
 
-          <v-row>
-            <v-col class="pb-0 mb-0">
-              <v-text-field
-                solo
-                outlined
-                v-model="email"
-                :rules="emailRules"
-                label="Correo Electronico"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
+            <v-row>
+              <v-col class="pb-0 mb-0">
+                <v-text-field
+                  solo
+                  outlined
+                  v-model="user.email"
+                  name="email"
+                  :rules="emailRules"
+                  label="Correo Electronico"
+                  required
+                ></v-text-field>
+                <!-- <div
+              v-if="submitted && errors.has('email')"
+              class="alert-danger"
+            >{{errors.first('email')}}</div> -->
+              </v-col>
+            </v-row>
+            <!-- <v-row>
             <v-col class="pb-0 mb-0">
               <v-text-field
                 solo
@@ -64,35 +73,59 @@
                 @click:append="show1 = !show1"
               ></v-text-field>
             </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="pb-0 mb-0">
-              <v-text-field
-                solo
-                outlined
-                v-model="password_confirmation"
-                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required, rules.min, rules.match]"
-                :type="show2 ? 'text' : 'password'"
-                name="input-10-1"
-                label="Repetir Contraseña"
-                hint="Al menos 10 caracteres"
-                counter
-                @click:append="show2 = !show2"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-btn  color="primary" large width="100%" @click="submit"
-                >Registrarse</v-btn
-              >
-              <router-link  to="/signin" class="clean-router">
-                <p>¿Ya tienes cuenta? Inicia sesion haciendo click aqui</p>
-              </router-link>
-            </v-col>
-          </v-row>
-        </v-form>
+          </v-row> -->
+            <v-row>
+              <v-col class="pb-0 mb-0">
+                <v-text-field
+                  solo
+                  outlined
+                  v-model="user.password"
+                  required
+                  :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                  :rules="[rules.required, rules.min, rules.match]"
+                  :type="show2 ? 'text' : 'password'"
+                  name="password"
+                  label="Contraseña"
+                  hint="Al menos 10 caracteres"
+                  counter
+                  @click:append="show2 = !show2"
+                ></v-text-field>
+                <!-- <div
+              v-if="submitted && errors.has('password')"
+              class="alert-danger"
+            >{{errors.first('password')}}</div> -->
+              </v-col>
+            </v-row>
+            <div v-if="message">
+            <div v-if="successful == false">
+              <v-alert dense outlined type="error">
+                {{ message.message }}
+              </v-alert>
+            </div>
+            <div v-else>
+              <v-alert dense outlined type="success">
+                {{ message }}
+              </v-alert>
+            </div>
+            </div>
+            <v-row>
+              <v-col>
+                <v-btn
+                  :disabled="!valid"
+                  class="mr-4"
+                  type="submit"
+                  color="primary"
+                  large
+                  width="100%"
+                  >Registrarse</v-btn
+                >
+
+                <router-link to="/signin" class="clean-router">
+                  <p>¿Ya tienes cuenta? Inicia sesion haciendo click aqui</p>
+                </router-link>
+              </v-col>
+            </v-row>
+          </v-form>
         </div>
       </v-col>
       <v-col cols="12" class="col-lg-3"></v-col>
@@ -101,74 +134,75 @@
 </template>
 
 <script>
+import User from "../../models/user";
 export default {
   data() {
     return {
+      user: new User("", "", ""),
+      submitted: false,
+      successful: "false",
+      message: "",
       show1: false,
       show2: false,
       password: "",
       password_confirmation: "",
       rules: {
-        required: (value) => !!value || "Obligatorio.",
-        min: (v) => v.length >= 10 || "Min 10 caracteres",
-        match: (v) =>
-          (!!v && v) === this.password || "Las contraseñas no coinciden",
-        match2: (v) =>
-          (!!v && v) === this.password_confirmation ||
-          "Las contraseñas no coinciden",
+        required: (value) => !!value || "Contraseña Obligatoria.",
+        min: (v) => v.length >= 10 || "Contraseña Min 10 caracteres",
+        // match: (v) =>
+        //   (!!v && v) === this.password || "Las contraseñas no coinciden",
+        // match2: (v) =>
+        //   (!!v && v) === this.password_confirmation ||
+        //   "Las contraseñas no coinciden",
       },
+
       valid: true,
       name: "",
       nameRules: [
-        (v) => !!v || "Nombre obligatorio",
-        (v) => (v && v.length <= 10) || "Limite de caracteres superados",
-      ],
-      lastname: "",
-      lastnameRules: [
-        (v) => !!v || "Apellido Obligatorio",
-        (v) => (v && v.length <= 10) || "Limite de caracteres superados",
+        (v) => !!v || "Nombre de usuario obligatorio",
+        (v) =>
+          (v && v.length <= 10) ||
+          "Nombre de usuario debe tener menos de 10 caracteres",
       ],
       email: "",
       emailRules: [
         (v) => !!v || "Correo electronico obligatorio",
-        (v) => /.+@.+\..+/.test(v) || "El correo electronico debe ser valido",
+        (v) => /.+@.+\..+/.test(v) || "Correo electronico debe ser valido",
       ],
-      checkbox: false,
       lazy: false,
       error: null,
       success: null,
       type: "formNotify",
     };
   },
-  methods: {
-    async register() {
-      try {
-        const result = await this.$axios.post("/auth/signup", {
-          name: this.name,
-          lastname: this.name,
-          email: this.email,
-          password: this.password,
-          password_confirmation: this.password_confirmation,
-        });
-        this.success = result.data.message;
-        console.log(result);
-      } catch (e) {
-        this.error = e.response.data.errors;
-        console.log(e);
-      }
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
     },
-    submit() {
-      if (this.$refs.form.validate()) {
-        this.register();
-        this.name = "";
-        this.lastname = "";
-        this.email = "";
-        this.password = "";
-        this.password_confirmation = "";
-        this.$refs.form.resetValidation();
-      } else {
-        console.log("Completar Campos");
-      }
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push("/profile");
+    }
+  },
+  methods: {
+    handleRegister() {
+      this.message = "";
+      this.submitted = true;
+
+      this.$store.dispatch("auth/register", this.user).then(
+        (data) => {
+          this.message = data.message;
+          this.successful = true;
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
+        }
+      );
     },
   },
 };

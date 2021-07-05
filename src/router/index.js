@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -53,7 +54,49 @@ const routes = [{
         // which is lazy-loaded when the route is visited.
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/main/Form.vue')
-    }
+    },
+    {
+        path: '/profile',
+        name: 'profile',
+        // lazy-loaded
+        component: () => import('../views/users/Profile.vue')
+      },
+      {
+        path: '/admin',
+        name: 'admin',
+        // lazy-loaded
+        component: () => import('../views/users/BoardAdmin.vue')
+      },
+      {
+        path: '/mod',
+        name: 'moderator',
+        // lazy-loaded
+        component: () => import('../views/users/BoardModerator.vue')
+      },
+      {
+        path: '/user',
+        name: 'user',
+        // lazy-loaded
+        component: () => import('../views/users/BoardUser.vue')
+      },
+      {
+        path: '/admin/categories',
+        name: 'category',
+        // lazy-loaded
+        component: () => import('../views/users/admin/Category.vue')
+      },
+      {
+        path: '/user/missolicitudes',
+        name: 'myrequest',
+        // lazy-loaded
+        component: () => import('../views/users/user/MyRequest.vue')
+      },
+      {
+        path: '/agent/solicitudes',
+        name: 'request',
+        // lazy-loaded
+        component: () => import('../views/users/agent/Request.vue')
+      }
 ]
 
 const router = new VueRouter({
